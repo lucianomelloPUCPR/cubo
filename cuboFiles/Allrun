@@ -1,0 +1,44 @@
+#!/bin/sh
+cd "${0%/*}" || exit 1    # Run from this directory
+
+# Function to check and backup existing ParaView state file
+backup_pvsm_file() {
+    local pvsm_file="$1"
+    local backup_dir="$2"
+    
+    if [ -f "$pvsm_file" ]; then
+        echo "ParaView state file found: $pvsm_file"
+        echo "Creating a backup..."
+        mkdir -p "$backup_dir"
+        cp "$pvsm_file" "$backup_dir/$(basename "$pvsm_file").bak"
+        echo "Backup created at: $backup_dir/$(basename "$pvsm_file").bak"
+    else
+        echo "No ParaView state file found at: $pvsm_file"
+    fi
+}
+
+# Main script execution
+main() {
+    # Define the path to your ParaView state file and backup directory
+    local pvsm_file="${0%/*}/cubeResults.pvsm"
+    local backup_dir="${0%/*}/backup"
+
+    # Backup the ParaView state file
+    backup_pvsm_file "$pvsm_file" "$backup_dir"
+
+    # Source tutorial run functions
+    . "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+    # OpenFOAM setup commands
+    foamCleanCase
+    blockMesh
+    "$(getApplication)"
+}
+
+# Execute the main function
+main
+
+
+
+
+
