@@ -1,0 +1,93 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    /*
+    inlet
+    {
+         type            fixedValue;
+        value           uniform (0.05 0 0); 
+    }
+    */
+
+inlet
+{
+    type            codedFixedValue;
+    value           $internalField;
+    name            customVelocity;
+    code            
+    #{
+        const fvPatch& boundaryPatch = patch();
+        const vectorField& Cf = boundaryPatch.Cf();
+        vectorField& field = *this;       
+        scalar s = 1.0; // Scale or size factor
+        scalar uMax = .05; // Maximum velocity at the center
+
+        // Calculate the middle point of the patch for a symmetric profile
+        const point middle = 0.5 * (gSum(Cf) / scalar(Cf.size()));
+
+        forAll(boundaryPatch, i)
+        {
+            const point& p = Cf[i];
+            // Normalize distances by s to scale the parabolic effect
+            const scalar xDist = (p.x() - middle.x()) / s;
+            const scalar yDist = (p.y() - middle.y()) / s;
+
+            // Parabolic profile diminishing from the center in x-y plane
+            scalar velocityMagnitude = uMax * (1.0 - (xDist * xDist + yDist * yDist));
+
+            // Ensure non-negative velocity magnitude
+            if (velocityMagnitude < 0) velocityMagnitude = 0;
+
+            field[i] = vector(velocityMagnitude, 0, 0); // Assuming x-direction flow
+        }
+        #};
+}
+
+
+
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
+    ground
+    {
+        type            noSlip;
+    }
+
+    top
+    {
+        type            noSlip;
+    }
+
+    front
+    {
+        type            noSlip;
+    }
+
+    back
+    {
+        type            noSlip;
+    }
+}
+
+// ************************************************************************* //
