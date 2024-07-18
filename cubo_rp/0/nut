@@ -32,12 +32,14 @@ boundaryField
     }
     ground
     {
-        type            empty;
+        type            calculated;
+        value           uniform 0;
     }
 	
 	top
     {
-        type            empty;
+        type            calculated;
+        value           uniform 0;
     }
     
 	front

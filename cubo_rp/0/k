@@ -25,31 +25,32 @@ boundaryField
         type            fixedValue;
         value           uniform 0.375;
     }
+    
     outlet
     {
         type            zeroGradient;
     }
+
     top
     {
-        type            empty;
+        type            zeroGradient;
     }
+
     ground
     {
-        type            empty;
+        type            zeroGradient;
     }
+
     front
     {
-        type            inletOutlet;
-        inletValue      uniform 0.375;
-        value           uniform 0.375;
+        type            zeroGradient;
     }
 	
 	back
     {
-        type            inletOutlet;
-        inletValue      uniform 0.375;
-        value           uniform 0.375;
+        type            zeroGradient;
     }
+    
 }
 
 

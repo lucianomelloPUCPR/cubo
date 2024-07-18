@@ -20,11 +20,11 @@ backgroundMesh
     xMax	1;
     yMin	-1;
     yMax	1;
-    zMin	-0.1;
-    zMax	0.1;
-    xCells  100;
-    yCells  100;
-    zCells  1;
+    zMin	-1;
+    zMax	1;
+    xCells  50;
+    yCells  50;
+    zCells  50;
 }
 
 convertToMeters 1;
@@ -79,7 +79,7 @@ boundary
 
     ground // z = -0.1
     {
-        type empty;
+        type patch;
         faces
         (
             (0 1 2 3)
@@ -88,7 +88,7 @@ boundary
 
     top // z = 0.1
     {
-        type empty;
+        type patch;
         faces
         (
             (4 7 6 5)

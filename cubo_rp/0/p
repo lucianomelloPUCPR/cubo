@@ -32,12 +32,14 @@ boundaryField
 
     ground
     {
-        type            empty;//zeroGradient;
+        type            fixedValue;
+        value           uniform 0;
     }
 
     top
     {
-        type            empty;//zeroGradient;
+        type            fixedValue;
+        value           uniform 0;
     }
 	
 	front

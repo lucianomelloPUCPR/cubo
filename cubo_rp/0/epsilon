@@ -31,12 +31,12 @@ boundaryField
     }
     ground
     {
-        type            empty;
+        type            zeroGradient;
     }
 
     top
     {
-        type            empty;
+        type            zeroGradient;
     }
 
     front

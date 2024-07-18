@@ -24,13 +24,13 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         3600;
+endTime         150;
 
 deltaT          1;
 
 writeControl    timeStep;
 
-writeInterval   1;
+writeInterval   2;
 
 purgeWrite      0;
 
@@ -46,9 +46,5 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-functions
-{
-
-}
 
 // ************************************************************************* //

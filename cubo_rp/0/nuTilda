@@ -32,24 +32,22 @@ boundaryField
 
     round
     {
-        type            empty;
+        type            zeroGradient;
     }
 	
 	top
     {
-        type            empty;
+        type            zeroGradient;
     }
     
 	front
     {
-        type            calculated;
-        value           uniform 0;
+        type            zeroGradient;
     }
 	
 	back
     {
-        type            calculated;
-        value           uniform 0;
+        type            zeroGradient;
     }
 }
 

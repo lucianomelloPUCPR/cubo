@@ -24,23 +24,30 @@ boundaryField
     {
         type            zeroGradient;
     }
+
     outlet
     {
         type            zeroGradient;
     }
-    upperWall
+
+    top
     {
-        type            fWallFunction;
-        value           uniform 0;
+        type            zeroGradient;
     }
-    lowerWall
+
+    ground
     {
-        type            fWallFunction;
-        value           uniform 0;
+        type            zeroGradient;
     }
-    frontAndBack
+
+    front
     {
-        type            empty;
+        type            zeroGradient;
+    }
+    
+    back
+    {
+        type            zeroGradient;
     }
 }
 
