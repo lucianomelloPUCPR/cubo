@@ -13,6 +13,4 @@ runApplication $application
 
 runApplication touch result.foam
 
-runApplication paraview velocityProfile.pvsm
-
 #------------------------------------------------------------------------------

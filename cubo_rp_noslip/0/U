@@ -27,43 +27,41 @@ boundaryField
     }
     */
 
-inlet
-{
-    type            codedFixedValue;
-    value           $internalField;
-    name            customVelocity;
-    code            
-    #{
-        const fvPatch& boundaryPatch = patch();
-        const vectorField& Cf = boundaryPatch.Cf();
-        vectorField& field = *this;       
-        scalar s = 1.0; // Scale or size factor
-        scalar uMax = .05; // Maximum velocity at the center
+    inlet
+    {
+        type            codedFixedValue;
+        value           $internalField;
+        name            customVelocity;
+        code            
+        #{
+            const fvPatch& boundaryPatch = patch();
+            const vectorField& Cf = boundaryPatch.Cf();
+            vectorField& field = *this;       
+            scalar s = 1.0; // Scale or size factor
+            scalar uMax = .05; // Maximum velocity at the center
 
-        // Calculate the middle point of the patch for a symmetric profile
-        const point middle = 0.5 * (gSum(Cf) / scalar(Cf.size()));
+            // Calculate the middle point of the patch for a symmetric profile
+            const point middle = 0.5 * (gSum(Cf) / scalar(Cf.size()));
 
-        forAll(boundaryPatch, i)
-        {
-            const point& p = Cf[i];
-            // Normalize distances by s to scale the parabolic effect
-            const scalar xDist = (p.x() - middle.x()) / s;
-            const scalar yDist = (p.y() - middle.y()) / s;
+            forAll(boundaryPatch, i)
+            {
+                const point& p = Cf[i];
+                // Normalize distances by s to scale the parabolic effect
+                const scalar xDist = (p.x() - middle.x()) / s;
+                const scalar yDist = (p.y() - middle.y()) / s;
+                const scalar rx = 1.0;
+                const scalar ry = 1.0;
 
-            // Parabolic profile diminishing from the center in x-y plane
-            scalar velocityMagnitude = uMax * (1.0 - (xDist * xDist + yDist * yDist));
+                // Parabolic profile diminishing from the center in x-y plane
+                scalar velocityMagnitude = uMax * (1.0 - (xDist * xDist/(2*rx*rx) + yDist * yDist/(2*ry*ry)));
 
-            // Ensure non-negative velocity magnitude
-            if (velocityMagnitude < 0) velocityMagnitude = 0;
+                // Ensure non-negative velocity magnitude
+                if (velocityMagnitude < 0) velocityMagnitude = 0;
 
-            field[i] = vector(velocityMagnitude, 0, 0); // Assuming x-direction flow
-        }
-        #};
-}
-
-
-
-
+                field[i] = vector(velocityMagnitude, 0, 0); // Assuming x-direction flow
+            }
+            #};
+    }
     outlet
     {
         type            zeroGradient;
